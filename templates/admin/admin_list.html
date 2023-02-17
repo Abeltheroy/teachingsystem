@@ -1,0 +1,50 @@
+{% extends 'Base.html' %}
+{% block option %}
+    <ul class="nav navbar-nav">
+        <li><a href="/stu/list/">用户管理<span class="sr-only">(current)</span></a></li>
+    </ul>
+    <ul class="nav navbar-nav">
+        <li><a href="/course/list/">课程管理<span class="sr-only">(current)</span></a></li>
+    </ul>
+    <ul class="nav navbar-nav">
+        <li><a href="/comment/list/">论坛管理<span class="sr-only">(current)</span></a></li>
+    </ul>
+{% endblock %}
+{% block content %}
+    <div>
+        <div class="container">
+            <div class="panel panel-default">
+                <!-- Default panel contents -->
+                <div class="panel-heading"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
+                    <span>管理员列表</span>
+                </div>
+
+                <!-- Table -->
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>用户名</th>
+                        <th>密码</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for item in form %}
+                        <tr>
+                            <td>{{ item.id }}</td>
+                            <td>{{ item.username }}</td>
+                            <td>******</td>
+                            <td>
+                                <a href="/admin/{{ item.id }}/reset/" class="btn btn-warning btn-xs">重置密码</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}

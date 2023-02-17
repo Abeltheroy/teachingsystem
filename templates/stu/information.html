@@ -1,0 +1,40 @@
+{% extends 'Base.html' %}
+{% block content %}
+<div>
+    <div class="container c1">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">{{ title }}</h3>
+            </div>
+            <div class="panel-body">
+                <form method="post" class="form-horizontal" novalidate>
+                    {% csrf_token %}
+                    {% for item in form %}
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-2 control-label">{{ item.label }}</label>
+                        <div class="col-sm-10">
+                            {{item}}
+                            <span style="color: red">{{ item.errors.0 }}</span>
+                        </div>
+
+                    </div>
+                    {% endfor %}
+                    <button type="submit" class="btn btn-primary" style="float: right">修改</button>
+                </form>
+                <a href="/student/list" class="btn btn-ajax">返回</a>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block js %}
+<script>
+    $('#id_birthday').datepicker({
+       format: 'yyyy-mm-dd',
+       startDate: '0',
+       language: "zh-CN",
+       autoclose: true
+    });
+</script>
+{% endblock %}

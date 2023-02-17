@@ -1,0 +1,52 @@
+{% extends 'Base.html' %}
+{% block css %}
+
+    <style>
+        .r1 {
+            border-radius: 0;
+        }
+
+        .img {
+            background-image: url("/app/static/img/cool-background.png");
+        }
+
+        .r2 {
+            height: 200px;
+            width: 300px;
+        }
+    </style>
+
+{% endblock %}
+{% block option %}
+    <ul class="nav navbar-nav">
+        <li><a href="/student/list/">首页<span class="sr-only">(current)</span></a></li>
+    </ul>
+    <ul class="nav navbar-nav">
+        <li><a href="#">我的订阅<span class="sr-only">(current)</span></a></li>
+    </ul>
+    <ul class="nav navbar-nav">
+        <li><a href="#">个性化推荐<span class="sr-only">(current)</span></a></li>
+    </ul>
+    <ul class="nav navbar-nav">
+        <li><a href="#">热门课程<span class="sr-only">(current)</span></a></li>
+    </ul>
+{% endblock %}
+{% block menu %}
+    <li><span class="glyphicon glyphicon-user" aria-hidden="true" style="text-align: center"><a
+            href="/information/{{ request.session.info.id }}/">个人资料</a></span>
+    </li>
+    <li role="separator" class="divider"></li>
+    <li><span class="glyphicon glyphicon-time" aria-hidden="true"><a href="/logout/">退出登录</a></span></li>
+{% endblock %}
+{% block content %}
+    <div class="row show-grid">
+        <div class="col-md-3"><img src="/app/static/img/cool-background.png" class="r2"></div>
+        <div class="col-md-3"><img src="/app/static/img/ch.jpeg" class="r2"></div>
+        <div class="col-md-3"><img src="/app/static/img/cool-background.png" class="r2"></div>
+        <div class="col-md-3"><img src="/app/static/img/ch.jpeg" class="r2"></div>
+        <div class="col-md-3">音乐课</div>
+        <div class="col-md-3">音乐课</div>
+        <div class="col-md-3">音乐课</div>
+        <div class="col-md-3">音乐课</div>
+    </div>
+{% endblock %}
