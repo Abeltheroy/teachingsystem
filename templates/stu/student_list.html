@@ -11,9 +11,17 @@
         }
 
         .r2 {
-            height: 200px;
+            height: 300px;
             width: 300px;
         }
+        .btn-refresh {
+            font-size: 20px;
+            padding: 10px 20px;
+        }
+        .r3{
+            margin-left: 30px;
+        }
+
     </style>
 
 {% endblock %}
@@ -28,7 +36,7 @@
         <li><a href="#">个性化推荐<span class="sr-only">(current)</span></a></li>
     </ul>
     <ul class="nav navbar-nav">
-        <li><a href="#">热门课程<span class="sr-only">(current)</span></a></li>
+        <li><a href="/course/popular">热门课程<span class="sr-only">(current)</span></a></li>
     </ul>
 {% endblock %}
 {% block menu %}
@@ -40,13 +48,102 @@
 {% endblock %}
 {% block content %}
     <div class="row show-grid">
-        <div class="col-md-3"><img src="/app/static/img/cool-background.png" class="r2"></div>
-        <div class="col-md-3"><img src="/app/static/img/ch.jpeg" class="r2"></div>
-        <div class="col-md-3"><img src="/app/static/img/cool-background.png" class="r2"></div>
-        <div class="col-md-3"><img src="/app/static/img/ch.jpeg" class="r2"></div>
-        <div class="col-md-3">音乐课</div>
-        <div class="col-md-3">音乐课</div>
-        <div class="col-md-3">音乐课</div>
-        <div class="col-md-3">音乐课</div>
+        <meta name="referrer" content="no-referrer">
+        {#        {% for item in course %}#}
+        {#            <div>#}
+        {#                <div class="col-md-3">#}
+        {#                    <div class="card">#}
+        {#                        <a href="#">#}
+        {#                            <img class="r2" src={{ item.img_url }}>#}
+        {#                            <div class="card-body">#}
+        {#                                <h5 class="card-title">{{ item.title }}</h5>#}
+        {#                            </div>#}
+        {#                        </a>#}
+        {#                    </div>#}
+        {#                </div>#}
+        {#            </div>#}
+        {#        {% endfor %}#}
+        {#        <div class="col-md-3"><img src="/app/static/img/jpg/business/1.jpg" class="r2">#}
+        {#            <div class="card-body">#}
+        {#                <h5 class="card-title">Course Title 1</h5>#}
+        {#                <p class="card-text">Course description goes here.</p>#}
+        {#            </div>#}
+        {#        </div>#}
+        {#        <div class="col-md-3"><img src="/app/static/img/cool-background.png" class="r2"></div>#}
+        {#        <div class="col-md-3"><img src="" class="r2"></div>#}
+        {#        <div class="col-md-3">音乐课</div>#}
+        {#        <div class="col-md-3">音乐课</div>#}
+        {#        <div class="col-md-3">音乐课</div>#}
+        {#        <div class="col-md-3">{{ course.img_url }}</div>#}
+        {#        <div class="container">#}
+        {#            <div class="row">#}
+        {#                {% for item in course %}#}
+        {#                    <div class="col-md-3">#}
+        {#                        <div class="card mb-4">#}
+        {#                            <a href="#">#}
+        {#                                <img class="card-img-top r2" src="{{ item.img_url }}" alt="{{ item.title }}">#}
+        {#                                <div class="card-body">#}
+        {#                                    <h5 class="card-title">{{ item.title }}</h5>#}
+        {#                                </div>#}
+        {#                            </a>#}
+        {#                        </div>#}
+        {#                    </div>#}
+        {#                {% endfor %}#}
+        {#            </div>#}
+        {#        </div>#}
+        {#        <div class="container">#}
+        {#            <div class="row">#}
+        {#                {% for item in course %}#}
+        {#                    <div class="col-md-3 col-sm-6">#}
+        {#                        <div class="card mb-4">#}
+        {#                            <a href="#">#}
+        {#                                <img class="card-img-top r2" src="{{ item.img_url }}" alt="{{ item.title }}">#}
+        {##}
+        {#                                <div class="card-body">#}
+        {#                                    <h5 class="card-title">{{ item.title }}</h5>#}
+        {#                                </div>#}
+        {#                            </a>#}
+        {#                        </div>#}
+        {#                    </div>#}
+        {#                {% endfor %}#}
+        {#            </div>#}
+        {#        </div>#}
+        <div class="r3">
+            {% for item in course %}
+                {% if forloop.counter0|divisibleby:4 %}
+                    <div class="row">
+                {% endif %}
+            <div class="col-md-3">
+                <div class="card mb-4">
+                    <a href="#">
+                        <img class="card-img-top r2" src="{{ item.img_url }}" alt="{{ item.title }}">
+
+                        <div class="card-body">
+                            <h5 class="card-title">{{ item.title }}</h5>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            {% if forloop.counter|divisibleby:4 or forloop.last %}
+                </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+
+
     </div>
+    <div style="float: right">
+        <li>
+            <a href="/student/list/" class="btn-refresh">
+                <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
+                <span class="glyphicon-class">刷新</span>
+            </a>
+        </li>
+    </div>
+
+{% endblock %}
+{% block js %}
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 {% endblock %}

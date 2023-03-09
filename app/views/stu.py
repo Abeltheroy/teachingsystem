@@ -3,6 +3,7 @@ from django.utils.safestring import mark_safe
 
 from app.models import *
 from app.utils.BootStrap import *
+import random
 
 
 class StuModelForm(BootStrapModelForm):
@@ -104,4 +105,9 @@ def delete(request, nid):
 
 
 def view(request):
-    return render(request, 'stu/student_list.html')
+    page = random.randint(1, 5025)
+    page_size = 40
+    start = page_size * (page - 1)
+    end = page_size * page
+    course = Course.objects.filter()[start:end]
+    return render(request, 'stu/student_list.html', {"course": course})

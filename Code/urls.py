@@ -33,5 +33,6 @@ urlpatterns = [
     path('stu/<int:nid>/modify/', stu.modify),
     path('stu/<int:nid>/delete/', stu.delete),
 
-    path('student/list/', stu.view)
+    path('student/list/', stu.view),
+    path('course/popular', course.popular)
 ]

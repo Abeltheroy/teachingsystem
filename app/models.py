@@ -3,7 +3,6 @@ from django.db import models
 
 # Create your models here.
 class Course(models.Model):
-
     id = models.AutoField(primary_key=True)
     title = models.CharField(verbose_name='标题', max_length=255)
     price = models.FloatField(verbose_name='价格')
@@ -11,6 +10,8 @@ class Course(models.Model):
     num_comments = models.IntegerField(verbose_name='评论人数')
     category = models.CharField(verbose_name='类别', max_length=255)
     language = models.CharField(verbose_name='语言', max_length=32)
+    img_url = models.CharField(verbose_name='图片地址', max_length=64, default='')
+    headline = models.TextField(verbose_name='概要',default='')
 
 
 class Admin(models.Model):
@@ -36,6 +37,7 @@ class Student(models.Model):
 class Subscribe(models.Model):
     s_id = models.ForeignKey(to="Student", to_field="id", on_delete=models.CASCADE, verbose_name='学生ID')
     c_id = models.ForeignKey(to="Course", to_field="id", on_delete=models.CASCADE, verbose_name="课程ID")
+
 
 class Comment(models.Model):
     s_id = models.ForeignKey(to="Student", to_field="id", on_delete=models.CASCADE, verbose_name='学生ID')

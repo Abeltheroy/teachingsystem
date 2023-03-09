@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect, HttpResponse
 from app.models import *
-from app.utils.BootStrap import BootStrapModelForm,BoorStrapForm
+from app.utils.BootStrap import BootStrapModelForm, BoorStrapForm
 from django import forms
+
 
 # Create your views here.
 class LoginForm(BoorStrapForm):
@@ -39,5 +40,3 @@ def login(request):
 def logout(request):
     request.session.clear()
     return redirect('/')
-
-

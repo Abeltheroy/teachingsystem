@@ -1,10 +1,165 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'Base.html' %}
+{% block css %}
 
-</body>
-</html>
+    <style>
+        .r1 {
+            border-radius: 0;
+        }
+
+        .img {
+            background-image: url("/app/static/img/cool-background.png");
+        }
+
+        .r2 {
+            height: 300px;
+            width: 300px;
+        }
+
+        .r3 {
+            margin-left: 30px;
+        }
+
+        .btn-refresh {
+            font-size: 20px;
+            padding: 10px 20px;
+        }
+
+        @media (max-width: 768px) {
+            .card {
+                width: 100%;
+            }
+        }
+
+        /* 优化卡片设计 */
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            transition: box-shadow 0.2s ease-in-out;
+        }
+
+        .card:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-img-top {
+            object-fit: cover;
+            height: 200px;
+        }
+
+        .card-body {
+            padding: 10px;
+        }
+
+        .card-title {
+            font-size: 18px;
+            margin: 5px 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* 导航栏样式 */
+        .navbar {
+            background-color: #f5f5f5;
+            border-radius: 0;
+        }
+
+        .navbar-brand {
+            font-size: 24px;
+            font-weight: bold;
+            margin-left: 20px;
+        }
+
+        .navbar-nav > li > a {
+            font-size: 16px;
+            margin-right: 20px;
+        }
+
+        .navbar-nav > li > a:hover {
+            color: #0069d9;
+        }
+
+        /* 添加下拉菜单 */
+        .dropdown-menu > li > a {
+            font-size: 16px;
+            padding: 10px 20px;
+        }
+
+        /* 添加动态效果 */
+        .btn-refresh {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-refresh:before {
+            content: "";
+            position: absolute;
+            top: -100%;
+            left: -100%;
+            width: 300%;
+            height: 300%;
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: rotate(45deg);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .btn-refresh:hover:before {
+            transform: translate(50%, 50%) rotate(45deg);
+        }
+    </style>
+
+{% endblock %}
+{% block option %}
+    <ul class="nav navbar-nav">
+        <li><a href="/student/list/">首页<span class="sr-only">(current)</span></a></li>
+    </ul>
+    <ul class="nav navbar-nav">
+        <li><a href="#">我的订阅<span class="sr-only">(current)</span></a></li>
+    </ul>
+    <ul class="nav navbar-nav">
+        <li><a href="#">个性化推荐<span class="sr-only">(current)</span></a></li>
+    </ul>
+    <ul class="nav navbar-nav">
+        <li><a href="/course/popular">热门课程<span class="sr-only">(current)</span></a></li>
+    </ul>
+{% endblock %}
+{% block menu %}
+    <li><span class="glyphicon glyphicon-user" aria-hidden="true" style="text-align: center"><a
+            href="/information/{{ request.session.info.id }}/">个人资料</a></span>
+    </li>
+    <li role="separator" class="divider"></li>
+    <li><span class="glyphicon glyphicon-time" aria-hidden="true"><a href="/logout/">退出登录</a></span></li>
+{% endblock %}
+{% block content %}
+    <div class="row show-grid">
+        <meta name="referrer" content="no-referrer">
+        <div class="r3">
+            {% for item in course %}
+                {% if forloop.counter0|divisibleby:4 %}
+                    <div class="row">
+                {% endif %}
+            <div class="col-md-3">
+                <div class="card mb-4">
+                    <a href="#">
+                        <img class="card-img-top r2" src="{{ item.img_url }}" alt="{{ item.title }}">
+
+                        <div class="card-body">
+                            <h5 class="card-title">{{ item.title }}</h5>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            {% if forloop.counter|divisibleby:4 or forloop.last %}
+                </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+{% block js %}
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+{% endblock %}
