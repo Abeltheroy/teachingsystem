@@ -30,7 +30,7 @@
         <li><a href="/student/list/">首页<span class="sr-only">(current)</span></a></li>
     </ul>
     <ul class="nav navbar-nav">
-        <li><a href="#">我的订阅<span class="sr-only">(current)</span></a></li>
+        <li><a href="/course/{{ request.session.info.id }}/subscribe/">我的订阅<span class="sr-only">(current)</span></a></li>
     </ul>
     <ul class="nav navbar-nav">
         <li><a href="#">个性化推荐<span class="sr-only">(current)</span></a></li>
@@ -49,65 +49,6 @@
 {% block content %}
     <div class="row show-grid">
         <meta name="referrer" content="no-referrer">
-        {#        {% for item in course %}#}
-        {#            <div>#}
-        {#                <div class="col-md-3">#}
-        {#                    <div class="card">#}
-        {#                        <a href="#">#}
-        {#                            <img class="r2" src={{ item.img_url }}>#}
-        {#                            <div class="card-body">#}
-        {#                                <h5 class="card-title">{{ item.title }}</h5>#}
-        {#                            </div>#}
-        {#                        </a>#}
-        {#                    </div>#}
-        {#                </div>#}
-        {#            </div>#}
-        {#        {% endfor %}#}
-        {#        <div class="col-md-3"><img src="/app/static/img/jpg/business/1.jpg" class="r2">#}
-        {#            <div class="card-body">#}
-        {#                <h5 class="card-title">Course Title 1</h5>#}
-        {#                <p class="card-text">Course description goes here.</p>#}
-        {#            </div>#}
-        {#        </div>#}
-        {#        <div class="col-md-3"><img src="/app/static/img/cool-background.png" class="r2"></div>#}
-        {#        <div class="col-md-3"><img src="" class="r2"></div>#}
-        {#        <div class="col-md-3">音乐课</div>#}
-        {#        <div class="col-md-3">音乐课</div>#}
-        {#        <div class="col-md-3">音乐课</div>#}
-        {#        <div class="col-md-3">{{ course.img_url }}</div>#}
-        {#        <div class="container">#}
-        {#            <div class="row">#}
-        {#                {% for item in course %}#}
-        {#                    <div class="col-md-3">#}
-        {#                        <div class="card mb-4">#}
-        {#                            <a href="#">#}
-        {#                                <img class="card-img-top r2" src="{{ item.img_url }}" alt="{{ item.title }}">#}
-        {#                                <div class="card-body">#}
-        {#                                    <h5 class="card-title">{{ item.title }}</h5>#}
-        {#                                </div>#}
-        {#                            </a>#}
-        {#                        </div>#}
-        {#                    </div>#}
-        {#                {% endfor %}#}
-        {#            </div>#}
-        {#        </div>#}
-        {#        <div class="container">#}
-        {#            <div class="row">#}
-        {#                {% for item in course %}#}
-        {#                    <div class="col-md-3 col-sm-6">#}
-        {#                        <div class="card mb-4">#}
-        {#                            <a href="#">#}
-        {#                                <img class="card-img-top r2" src="{{ item.img_url }}" alt="{{ item.title }}">#}
-        {##}
-        {#                                <div class="card-body">#}
-        {#                                    <h5 class="card-title">{{ item.title }}</h5>#}
-        {#                                </div>#}
-        {#                            </a>#}
-        {#                        </div>#}
-        {#                    </div>#}
-        {#                {% endfor %}#}
-        {#            </div>#}
-        {#        </div>#}
         <div class="r3">
             {% for item in course %}
                 {% if forloop.counter0|divisibleby:4 %}
@@ -115,9 +56,8 @@
                 {% endif %}
             <div class="col-md-3">
                 <div class="card mb-4">
-                    <a href="#">
+                    <a href="/course/{{ item.id }}/detail/">
                         <img class="card-img-top r2" src="{{ item.img_url }}" alt="{{ item.title }}">
-
                         <div class="card-body">
                             <h5 class="card-title">{{ item.title }}</h5>
                         </div>
@@ -133,12 +73,12 @@
 
     </div>
     <div style="float: right">
-        <li>
+
             <a href="/student/list/" class="btn-refresh">
                 <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
                 <span class="glyphicon-class">刷新</span>
             </a>
-        </li>
+
     </div>
 
 {% endblock %}

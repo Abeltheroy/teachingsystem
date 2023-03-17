@@ -11,7 +11,8 @@ class Course(models.Model):
     category = models.CharField(verbose_name='类别', max_length=255)
     language = models.CharField(verbose_name='语言', max_length=32)
     img_url = models.CharField(verbose_name='图片地址', max_length=64, default='')
-    headline = models.TextField(verbose_name='概要',default='')
+    headline = models.TextField(verbose_name='概要', default='')
+    like_course = models.IntegerField(verbose_name='点赞数', default=0)
 
 
 class Admin(models.Model):
@@ -43,3 +44,9 @@ class Comment(models.Model):
     s_id = models.ForeignKey(to="Student", to_field="id", on_delete=models.CASCADE, verbose_name='学生ID')
     c_id = models.ForeignKey(to="Course", to_field="id", on_delete=models.CASCADE, verbose_name="课程ID")
     comment = models.CharField(verbose_name="评论", max_length=128)
+
+
+class Like(models.Model):
+    s = models.ForeignKey(to="Student", to_field="id", on_delete=models.CASCADE, verbose_name='学生ID')
+    c = models.ForeignKey(to="Course", to_field="id", on_delete=models.CASCADE, verbose_name="课程ID")
+    is_like = models.CharField(verbose_name="是否点赞",default='',max_length=28)
