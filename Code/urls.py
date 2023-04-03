@@ -16,17 +16,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from app.views import account,admin,course,stu
+from app.views import account, admin, course, stu
+
 urlpatterns = [
     # path('admin/', admin.site.urls),
     path('', account.login),
     path('logout/', account.logout),
     path('information/<int:nid>/', stu.information),
 
-
     path('admin/list/', admin.list),
     path('admin/<int:nid>/reset/', admin.reset),
-
 
     path('stu/list/', stu.list),
     path('stu/add/', stu.add),
@@ -37,5 +36,6 @@ urlpatterns = [
     path('course/popular/', course.popular),
     path('course/<int:nid>/subscribe/', course.my_subscribe),
     path('course/<int:nid>/detail/', course.detail),
-    path('course/<int:nid>/comment/add/', course.add_comment)
+    path('course/add_comment/', course.add_comment)
+
 ]

@@ -2,6 +2,7 @@ from django.core.exceptions import ValidationError
 from django.shortcuts import render, redirect, HttpResponse
 from app.models import *
 from app.utils.BootStrap import *
+from django.http import JsonResponse
 from django import forms
 from django.urls import reverse
 import random
@@ -19,6 +20,12 @@ def my_subscribe(request, nid):
     return render(request, 'course/subscribe_list.html')
 
 
+class CommentForm(BootStrapModelForm):
+    class Meta:
+        model = Comment
+        fields = ["comment", "s_id", "c_id"]
+
+
 def detail(request, nid):
     course = Course.objects.filter(id=nid).first()
     r = random.randint(2, 100)
@@ -29,21 +36,20 @@ def detail(request, nid):
     for i in comment:
         # name_list.append(Student.objects.filter(id=i.s_id.id).first().username)
         dicts[Student.objects.filter(id=i.s_id.id).first().username] = i.comment
+
     return render(request, 'course/detail_list.html', {"course": course, "relate": related_course, "time": time,
                                                        "comment": dicts})
+def add_comment(request):
+    if request.method == 'POST':
+        course_id = request.POST.get('course_id')
+        comment_text = request.POST.get('comment')
+        student_id = request.session["info"]["id"]
+        print(course_id, comment_text, student_id)
+        # create new comment object and save it to the database
+        s = Student.objects.filter(id = student_id).first()
+        c = Course.objects.filter(id = course_id).first()
+        comment = Comment(c_id=c, s_id=s, comment=comment_text)
+        comment.save()
+        return JsonResponse({'success': True})
+    return JsonResponse({'success': False})
 
-
-class CommentForm(BootStrapModelForm):
-    class Meta:
-        model = Comment
-        fields = ["comment"]
-
-
-def add_comment(request, nid):
-    if request.method == 'GET':
-        new = CommentForm()
-        return render(request, "course/detail_list.html", {"new": new})
-    form = CommentForm(request.POST)
-    if form.is_valid():
-        form.save()
-        return redirect(reverse('course.detail', args=[nid]))

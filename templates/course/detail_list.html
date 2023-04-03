@@ -28,6 +28,10 @@
             margin-top: 20px;
         }
 
+        .r {
+            float: right;
+        }
+
         .btn-like {
             color: #dc3545;
         }
@@ -41,8 +45,8 @@
 
 <div class="container">
     <div>
-        <a href="/student/list/" >
-            <span class="glyphicon glyphicon-arrow-left"  aria-hidden="true" style="font-size: 30px;"></span>
+        <a href="/student/list/">
+            <span class="glyphicon glyphicon-arrow-left" aria-hidden="true" style="font-size: 30px;"></span>
             <span class="glyphicon-class" style="font-size: 30px;"></span>
         </a>
     </div>
@@ -71,7 +75,8 @@
                     </button>
                 </a>
                 <a href="#">
-                    <button type="button" class="btn btn-light btn-subscribe" data-subscribed="false" style="font-size: 20px;">
+                    <button type="button" class="btn btn-light btn-subscribe" data-subscribed="false"
+                            style="font-size: 20px;">
                         <i class="fa fa-bell"></i>
                     </button>
                 </a>
@@ -82,13 +87,14 @@
             </div>
 
             <hr>
-        <div class="row">
-            <div class="col-md-4">
+            <div class="row">
+                <div class="col-md-4">
                     <div class="card mb-3">
                         <div class="card-body">
                             <h5 class="card-title">课程信息</h5>
                             <ul class="list-group list-group-flush">
-                                <li class="list-group-item">课程学习人数：<span class="badge badge-primary">{{ course.num_subscribers }}</span>
+                                <li class="list-group-item">课程学习人数：<span
+                                        class="badge badge-primary">{{ course.num_subscribers }}</span>
                                 </li>
                                 <li class="list-group-item">课程时长：<span class="badge badge-primary">{{ time }}</span>小时
                                 </li>
@@ -107,130 +113,168 @@
                                 <i class="fa fa-star"></i>
                                 <i class="fa fa-star-half-o"></i>
                             </p>
-                            <p class="text-center">共<span class="text-primary">{{ course.num_comments }}</span>个评价</p>
+                            <p class="text-center">共<span class="text-primary">{{ course.num_comments }}</span>个评价
+                            </p>
                         </div>
                     </div>
                 </div>
-            <div class="col-md-8">
-            <h3>相关课程推荐</h3>
-            <div class="row">
-                {% for item in relate %}
-                <div class="col-md-4 mb-3">
-                    <div class="card">
-                        <img src={{ item.img_url }} class="card-img-top" alt="课程图片">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ item.title }}</h5>
-                            <p class="card-text">{{ item.headline }}</p>
-                            <a href="/course/{{ item.id }}/detail/" class="btn btn-primary">查看详情</a>
-                        </div>
+                <div class="col-md-8">
+                    <h3>相关课程推荐</h3>
+                    <div class="row">
+                        {% for item in relate %}
+                            <div class="col-md-4 mb-3">
+                                <div class="card">
+                                    <img src={{ item.img_url }} class="card-img-top" alt="课程图片">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ item.title }}</h5>
+                                        <p class="card-text">{{ item.headline }}</p>
+                                        <a href="/course/{{ item.id }}/detail/" class="btn btn-primary">查看详情</a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+
+
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                {#            <form method="post" action="/course/{{ course.id }}/comment/add/">#}
+                {#                {% csrf_token %}#}
+                {##}
+                {#                <div class="form-group">#}
+                {#                    <label for="comment">发表评论</label>#}
+                {#                    <textarea class="form-control" name="comment">{{ new.comment }}</textarea>#}
+                {#                    <span class="col-md-10">{{ new.comment }}</span>#}
+                {#                </div>#}
+                {#                <div class="form-group">#}
+                {#                    <input type="hidden" name="c_id" value="{{ course.id }}">#}
+                {#                </div>#}
+                {#                <div class="form-group">#}
+                {#                    <input type="hidden" name="s_id" value="{{ request.session.info.id }}">#}
+                {#                </div>#}
+                {##}
+                {#                <button type="submit" class="btn btn-primary">提交</button>#}
+                {#            </form>#}
+                <form method="post" action="/course/add_comment/">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="comment">发表评论:</label>
+                        <textarea class="form-control" rows="5" id="comment"></textarea>
+                    </div>
+                    <button id="submit-comment" class="btn btn-primary">提交</button>
+                </form>
+                <hr>
+                <h3>评论区</h3>
+                {% for key,value in comment.items %}
+                    <ul class="list-unstyled">
+                        <li>
+                            <div class="media">
+                                <div class="media-body">
+                                    <h5 class="mt-0">{{ key }}</h5>
+                                    <textarea class="form-control" id="comment" rows="3"
+                                              name="comment">{{ value }}</textarea>
+                                </div>
+                            </div>
+                        </li>
+                        <!-- 其他评论列表项 -->
+                    </ul>
                 {% endfor %}
 
-
-            </div>
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-12">
-            <form method="post" action="/course/{{ course.id }}/comment/add/">
-                {% csrf_token %}
+    <script src="{% static 'plugins/bootstrap-3.4.1-dist/js/bootstrap.js' %}"></script>
+    <script>
+        $(document).ready(function () {
+            // 点击点赞按钮
+            $(".btn-like").click(function () {
+                // 切换红心图标
+                if ($(this).attr("data-liked") === "false") {
+                    $(this).addClass("btn-danger");
+                    $(this).removeClass("btn-light");
+                    $(this).find("i").removeClass("fa-heart");
+                    $(this).find("i").addClass("fa-heartbeat");
+                    $(this).attr("data-liked", "true");
+                } else {
+                    $(this).removeClass("btn-danger");
+                    $(this).addClass("btn-light");
+                    $(this).find("i").removeClass("fa-heartbeat");
+                    $(this).find("i").addClass("fa-heart");
+                    $(this).attr("data-liked", "false");
+                }
+            });
 
-                <div class="form-group">
-                    <label for="comment">发表评论</label>
-                    <textarea class="form-control" id="comment" rows="3" name="comment">{{ new.comment }}</textarea>
+            // 点击订阅按钮
+            $(".btn-subscribe").click(function () {
+                // 切换订阅状态
+                if ($(this).attr("data-subscribed") === "false") {
+                    $(this).addClass("btn-primary");
+                    $(this).removeClass("btn-light");
+                    $(this).html("<i class='fa fa-check'></i> 订阅");
+                    $(this).attr("data-subscribed", "true");
+                } else {
+                    $(this).removeClass("btn-primary");
+                    $(this).addClass("btn-light");
+                    $(this).html("<i class='fa fa-bell'></i> 已订阅");
+                    $(this).attr("data-subscribed", "false");
+                }
+            });
+        });
+    </script>
+{#    <script>#}
+{#        $(function () {#}
+{#            // 评论提交事件#}
+{#            $("form").submit(function (event) {#}
+{#                event.preventDefault(); // 阻止默认提交行为#}
+{#                var comment = $("#comment").val(); // 获取评论内容#}
+{#                if (comment != "") {#}
+{#                    var username = "匿名用户"; // 默认用户名为“匿名用户”#}
+{#                    var avatar = "https://via.placeholder.com/64"; // 默认头像#}
+{#                    var date = new Date().toLocaleString(); // 当前时间#}
+{#                    var html = `<li>#}
+{#            <div class="media">#}
+{#              <div class="media-body">#}
+{#                <h5 class="mt-0">${username}</h5>#}
+{#                ${comment}#}
+{#                <small class="text-muted">${date}</small>#}
+{#              </div>#}
+{#            </div>#}
+{#          </li>`;#}
+{#                    $("ul").append(html); // 将评论添加到列表中#}
+{#                    $("#comment").val(""); // 清空评论框#}
+{#                }#}
+{#            });#}
+{#        });#}
+{#    </script>#}
+    <script>
+        $(document).ready(function () {
+            $('#submit-comment').click(function () {
+                var course_id =  {{course.id}};
+                var comment = $('#comment').val();
+                $.ajax({
+                    type: 'POST',
+                    url: '/course/add_comment/',
+                    data: {
+                        'course_id': course_id,
+                        'comment': comment
+                    },
+                    success: function (data) {
+                        // handle success case
+                        alert('评论已提交');
+                    },
+                    error: function (xhr, status, error) {
+                        // handle error case
+                        alert('评论提交失败');
+                    }
+                });
+            });
+        });
+    </script>
 
-                </div>
-                <div class="form-group">
-                    <input type="hidden" name="c_id" value="{{ course.id }}">
-                </div>
-                <div class="form-group">
-                    <input type="hidden" name="s_id" value="{{ request.session.info.id }}">
-                </div>
-
-                <button type="submit" class="btn btn-primary">提交</button>
-            </form>
-            <hr>
-            <h3>评论区</h3>
-            {% for key,value in comment.items %}
-            <ul class="list-unstyled">
-                <li>
-                    <div class="media">
-                        <div class="media-body">
-                            <h5 class="mt-0">{{ key }}</h5>
-                            <textarea class="form-control" id="comment" rows="3" name="comment">{{ value }}</textarea>
-                        </div>
-                    </div>
-                </li>
-                <!-- 其他评论列表项 -->
-            </ul>
-            {% endfor %}
-        </div>
-    </div>
 </div>
-<script src="{% static 'plugins/bootstrap-3.4.1-dist/js/bootstrap.js' %}"></script>
-<script>
-    $(document).ready(function () {
-        // 点击点赞按钮
-        $(".btn-like").click(function () {
-            // 切换红心图标
-            if ($(this).attr("data-liked") === "false") {
-                $(this).addClass("btn-danger");
-                $(this).removeClass("btn-light");
-                $(this).find("i").removeClass("fa-heart");
-                $(this).find("i").addClass("fa-heartbeat");
-                $(this).attr("data-liked", "true");
-            } else {
-                $(this).removeClass("btn-danger");
-                $(this).addClass("btn-light");
-                $(this).find("i").removeClass("fa-heartbeat");
-                $(this).find("i").addClass("fa-heart");
-                $(this).attr("data-liked", "false");
-            }
-        });
 
-        // 点击订阅按钮
-        $(".btn-subscribe").click(function () {
-            // 切换订阅状态
-            if ($(this).attr("data-subscribed") === "false") {
-                $(this).addClass("btn-primary");
-                $(this).removeClass("btn-light");
-                $(this).html("<i class='fa fa-check'></i> 订阅");
-                $(this).attr("data-subscribed", "true");
-            } else {
-                $(this).removeClass("btn-primary");
-                $(this).addClass("btn-light");
-                $(this).html("<i class='fa fa-bell'></i> 已订阅");
-                $(this).attr("data-subscribed", "false");
-            }
-        });
-    });
-</script>
-<script>
-    $(function () {
-        // 评论提交事件
-        $("form").submit(function (event) {
-            event.preventDefault(); // 阻止默认提交行为
-            var comment = $("#comment").val(); // 获取评论内容
-            if (comment != "") {
-                var username = "匿名用户"; // 默认用户名为“匿名用户”
-                var avatar = "https://via.placeholder.com/64"; // 默认头像
-                var date = new Date().toLocaleString(); // 当前时间
-                var html = `<li>
-            <div class="media">
-              <div class="media-body">
-                <h5 class="mt-0">${username}</h5>
-                ${comment}
-                <small class="text-muted">${date}</small>
-              </div>
-            </div>
-          </li>`;
-                $("ul").append(html); // 将评论添加到列表中
-                $("#comment").val(""); // 清空评论框
-            }
-        });
-    });
-</script>
 </body>
 </html>
