@@ -1,5 +1,7 @@
 from django.core.exceptions import ValidationError
 from django.shortcuts import render, redirect, HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+
 from app.models import *
 from app.utils.BootStrap import *
 from django.http import JsonResponse
@@ -13,11 +15,40 @@ def popular(request):
     return render(request, 'course/course_list.html', {"course": course})
 
 
-def my_subscribe(request, nid):
-    course_id = Subscribe.objects.filter(s_id=nid)
-    print(course_id)
+class SubscribeForm(BootStrapModelForm):
+    class Meta:
+        model = Subscribe
+        fields = ["s_id", "c_id"]
 
-    return render(request, 'course/subscribe_list.html')
+
+def my_subscribe(request, nid):
+    cid_list = Subscribe.objects.filter(s_id=nid).all().values_list("c_id", flat=
+                                                                  True)
+    c_list = []
+    for i in cid_list:
+        c_list.append(i)
+    course = Course.objects.none()
+    for i in c_list:
+        c = Course.objects.filter(id=i)
+        course |= c
+    print(course)
+    return render(request, 'course/subscribe_list.html', {"course": course})
+
+
+@csrf_exempt
+def subscribe(request):
+    form = SubscribeForm(data=request.POST)
+    form.save()
+    return JsonResponse(True)
+
+
+def cancel_subscribe(request):
+    ins = Subscribe.objects.filter(c_id=request.GET.get("c_id"), s_id=request
+                                   .GET.get("s_id")).first()
+    if not ins:
+        return JsonResponse({"status": False})
+    ins.delete()
+    return JsonResponse({"status": True})
 
 
 class CommentForm(BootStrapModelForm):
@@ -38,18 +69,19 @@ def detail(request, nid):
         dicts[Student.objects.filter(id=i.s_id.id).first().username] = i.comment
 
     return render(request, 'course/detail_list.html', {"course": course, "relate": related_course, "time": time,
-                                                       "comment": dicts})
-def add_comment(request):
-    if request.method == 'POST':
-        course_id = request.POST.get('course_id')
-        comment_text = request.POST.get('comment')
-        student_id = request.session["info"]["id"]
-        print(course_id, comment_text, student_id)
-        # create new comment object and save it to the database
-        s = Student.objects.filter(id = student_id).first()
-        c = Course.objects.filter(id = course_id).first()
-        comment = Comment(c_id=c, s_id=s, comment=comment_text)
-        comment.save()
-        return JsonResponse({'success': True})
-    return JsonResponse({'success': False})
 
+                                                       "comment": dicts})
+
+
+@csrf_exempt
+def add_comment(request):
+    form = CommentForm(data=request.POST)
+    form.save()
+    return JsonResponse({'success': True})
+
+
+def like(request, nid):
+    course = Course.objects.filter(id=nid).first()
+    course.like_course = course.like_course + 1
+    course.save()
+    return detail(request, nid)

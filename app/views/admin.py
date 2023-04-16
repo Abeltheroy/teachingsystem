@@ -47,3 +47,13 @@ def reset(request, nid):
         form.save()
         return redirect('/admin/list')
     return render(request, 'change.html', {"form": form, "title": "重置密码"})
+
+
+def course_list(request):
+    return HttpResponse(True)
+
+
+def forum(request):
+    c_set = set()
+
+    return render(request, 'admin/forum.html')

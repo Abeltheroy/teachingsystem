@@ -30,13 +30,16 @@
         <li><a href="/student/list/">首页<span class="sr-only">(current)</span></a></li>
     </ul>
     <ul class="nav navbar-nav">
-        <li><a href="/course/{{ request.session.info.id }}/subscribe/">我的订阅<span class="sr-only">(current)</span></a></li>
+        <li><a href="/course/{{ request.session.info.id }}/my_subscribe/">我的订阅<span class="sr-only">(current)</span></a></li>
     </ul>
     <ul class="nav navbar-nav">
-        <li><a href="#">个性化推荐<span class="sr-only">(current)</span></a></li>
+        <li><a href="/course/{{ request.session.info.id }}/recommend/">个性化推荐<span class="sr-only">(current)</span></a></li>
     </ul>
     <ul class="nav navbar-nav">
-        <li><a href="/course/popular">热门课程<span class="sr-only">(current)</span></a></li>
+        <li><a href="/course/popular/">热门课程<span class="sr-only">(current)</span></a></li>
+    </ul>
+    <ul class="nav navbar-nav">
+        <li><a href="/data/statistics/">数据统计<span class="sr-only">(current)</span></a></li>
     </ul>
 {% endblock %}
 {% block menu %}

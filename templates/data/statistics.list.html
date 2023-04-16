@@ -1,0 +1,129 @@
+{% extends 'Base.html' %}
+{% load static %}
+{% block option %}
+    <ul class="nav navbar-nav">
+        <li><a href="/student/list/">首页<span class="sr-only">(current)</span></a></li>
+    </ul>
+    <ul class="nav navbar-nav">
+        <li><a href="/course/{{ request.session.info.id }}/my_subscribe/">我的订阅<span
+                class="sr-only">(current)</span></a></li>
+    </ul>
+    <ul class="nav navbar-nav">
+        <li><a href="/course/{{ request.session.info.id }}/recommend/">个性化推荐<span class="sr-only">(current)</span></a></li>
+    </ul>
+    <ul class="nav navbar-nav">
+        <li><a href="/course/popular/">热门课程<span class="sr-only">(current)</span></a></li>
+    </ul>
+    <ul class="nav navbar-nav">
+        <li><a href="/data/statistics/">数据统计<span class="sr-only">(current)</span></a></li>
+    </ul>
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <div>
+            <div class="panel panel-default">
+                <div class="panel-heading">柱状图</div>
+                <div class="panel-body">
+                    <div id="m1" style="width: 100%;height: 400px;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <div class="panel panel-default">
+                <div class="panel-heading">饼图</div>
+                <div class="panel-body">
+                    <div id="m2" style="width: 100%;height: 600px"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+{% block js %}
+    <script src="{% static 'js/echarts.js' %}"></script>
+    <script type="text/javascript">
+        $(function () {
+            initbar();
+            initpie();
+        })
+
+        function initbar() {
+            // 基于准备好的dom，初始化echarts实例
+            var myChart = echarts.init(document.getElementById('m1'));
+
+            // 指定图表的配置项和数据
+            var option = {
+                title: {
+                    text: '各分类课程数量'
+                },
+                tooltip: {},
+                legend: {
+                    data: []
+                },
+                xAxis: {
+                    data: []
+                },
+                yAxis: {},
+                series: []
+            };
+
+            $.ajax({
+                url: '/data/bar/',
+                type: 'get',
+                dataType: 'json',
+                success: function (res) {
+
+                    if (res.status) {
+                        option.legend.data = res.data.legend;
+                        option.xAxis.data = res.data.x_axis;
+                        option.series = res.data.series_list
+
+                        // 使用刚指定的配置项和数据显示图表。
+                        myChart.setOption(option);
+                    }
+
+                }
+            })
+
+
+        }
+
+        function initpie() {
+            var chartDom = document.getElementById('m2');
+            var myChart = echarts.init(chartDom);
+            var option = {
+                title: {},
+                tooltip: {
+                    trigger: 'item'
+                },
+                legend: {},
+                series: [
+
+                ]
+            };
+            var s = {{ request.session.info.id }}
+
+            $.ajax({
+                url: '/data/pie/',
+                type: 'get',
+                dataType: 'json',
+                data: {
+                    "s_id": s,
+                },
+                success: function (res) {
+                    if (res.status) {
+                        option.series = res.series_data
+                        option.legend = res.legend
+                        option.title = res.title
+                        option && myChart.setOption(option)
+
+                    }
+
+                }
+            })
+
+        }
+
+    </script>
+{% endblock %}

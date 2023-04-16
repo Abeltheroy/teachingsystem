@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from app.views import account, admin, course, stu
+from app.views import account, admin, course, stu, data, recommend
 
 urlpatterns = [
     # path('admin/', admin.site.urls),
@@ -32,10 +32,21 @@ urlpatterns = [
     path('stu/<int:nid>/modify/', stu.modify),
     path('stu/<int:nid>/delete/', stu.delete),
 
+    path('course/list/', admin.course_list),
+    path('forum/list/', admin.forum),
+
     path('student/list/', stu.view),
     path('course/popular/', course.popular),
-    path('course/<int:nid>/subscribe/', course.my_subscribe),
+    path('course/subscribe/', course.subscribe),
+    path('course/cancel_subscribe/', course.cancel_subscribe),
     path('course/<int:nid>/detail/', course.detail),
-    path('course/add_comment/', course.add_comment)
+    path('course/add_comment/', course.add_comment),
+    path('course/<int:nid>/like/', course.like),
+    path('course/<int:nid>/my_subscribe/', course.my_subscribe),
+    path('course/<int:sid>/recommend/', recommend.recommend),
+
+    path('data/statistics/', data.statistics),
+    path('data/bar/', data.bar),
+    path('data/pie/', data.pie)
 
 ]
