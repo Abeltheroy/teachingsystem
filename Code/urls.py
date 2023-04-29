@@ -23,6 +23,7 @@ urlpatterns = [
     path('', account.login),
     path('logout/', account.logout),
     path('information/<int:nid>/', stu.information),
+    path('register/', stu.register),
 
     path('admin/list/', admin.list),
     path('admin/<int:nid>/reset/', admin.reset),
@@ -33,7 +34,9 @@ urlpatterns = [
     path('stu/<int:nid>/delete/', stu.delete),
 
     path('course/list/', admin.course_list),
-    path('forum/list/', admin.forum),
+    path('comment/list/', admin.forum),
+    path('forum/<int:cid>/', admin.forum_detail),
+    path('forum/<int:cid>/<str:name>/delete/', admin.forum_delete),
 
     path('student/list/', stu.view),
     path('course/popular/', course.popular),

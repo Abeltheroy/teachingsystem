@@ -41,12 +41,12 @@ def reset(request, nid):
     title = "重置管理员{}的密码".format(row_object.username)
     if request.method == 'GET':
         form = AdminReset()
-        return render(request, 'change.html', {"form": form, "title": "重置密码"})
+        return render(request, 'change.html', {"form": form, "title": title})
     form = AdminReset(data=request.POST, instance=row_object)
     if form.is_valid():
         form.save()
         return redirect('/admin/list')
-    return render(request, 'change.html', {"form": form, "title": "重置密码"})
+    return render(request, 'change.html', {"form": form, "title": title})
 
 
 def course_list(request):
@@ -55,5 +55,24 @@ def course_list(request):
 
 def forum(request):
     c_set = set()
+    cs = Comment.objects.all()
+    for i in cs:
+        c_set.add(i.c_id)
+    res = Course.objects.none()
+    print(c_set)
+    for j in c_set:
+        c = Course.objects.filter(id=j.id)
+        res |= c
+    return render(request, 'admin/forum.html', {"course": res})
 
-    return render(request, 'admin/forum.html')
+def forum_detail(request, cid):
+    comment = Comment.objects.filter(c_id=cid).all()
+    dicts = {}
+    for i in comment:
+        dicts[Student.objects.filter(id=i.s_id.id).first().username] = i.comment
+    return render(request, 'admin/forum_detail.html', {"comment": dicts, "cid": cid})
+
+def forum_delete(request, cid ,name):
+    sid = Student.objects.filter(username=name).first()
+    Comment.objects.filter(c_id=cid, s_id=sid).delete()
+    return forum_detail(request, cid)

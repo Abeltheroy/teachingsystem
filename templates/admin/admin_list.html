@@ -1,4 +1,15 @@
+
 {% extends 'Base.html' %}
+{% load static %}
+{% block css %}
+    <style>
+        body{
+            background-image: url("{% static 'img/jpg/Background/cool.png' %}");
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+    </style>
+{% endblock %}
 {% block option %}
     <ul class="nav navbar-nav">
         <li><a href="/admin/list/">管理员列表<span class="sr-only">(current)</span></a></li>
@@ -7,11 +18,12 @@
         <li><a href="/stu/list/">用户管理<span class="sr-only">(current)</span></a></li>
     </ul>
     <ul class="nav navbar-nav">
-        <li><a href="/course/list/">课程管理<span class="sr-only">(current)</span></a></li>
-    </ul>
-    <ul class="nav navbar-nav">
         <li><a href="/comment/list/">论坛管理<span class="sr-only">(current)</span></a></li>
     </ul>
+{% endblock %}
+{% block menu %}
+    <li role="separator" class="divider"></li>
+    <li><span class="glyphicon glyphicon-time" aria-hidden="true"><a href="/logout/">退出登录</a></span></li>
 {% endblock %}
 {% block content %}
     <div>

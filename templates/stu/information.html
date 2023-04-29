@@ -1,4 +1,14 @@
 {% extends 'Base.html' %}
+{% load static %}
+{% block css %}
+    <style>
+        body{
+            background-image: url("{% static 'img/jpg/Background/a.jpg' %}");
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+    </style>
+{% endblock %}
 {% block content %}
 <div>
     <div class="container c1">
@@ -32,7 +42,7 @@
 <script>
     $('#id_birthday').datepicker({
        format: 'yyyy-mm-dd',
-       startDate: '0',
+       startDate: '',
        language: "zh-CN",
        autoclose: true
     });

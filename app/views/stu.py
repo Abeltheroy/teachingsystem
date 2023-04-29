@@ -75,7 +75,15 @@ def list(request):
                   {"n1": Student.objects.filter(**data_dict)[start:end], "n2": value,
                    "page_string": page_string})
 
-
+def register(request):
+    if request.method == 'GET':
+        form = StuModelForm()
+        return render(request, 'add.html', {"form": form, "title": "新用户注册"})
+    form = StuModelForm(data=request.POST)
+    if form.is_valid():
+        form.save()
+        return redirect('/')
+    return render(request, 'add.html', {"form": form, "title": "新用户注册"})
 def add(request):
     if request.method == 'GET':
         form = StuModelForm()
