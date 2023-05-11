@@ -6,37 +6,6 @@ from scipy.sparse import csr_matrix
 from app.models import *
 
 
-# def recommend(request, sid):
-#     # 获取订阅数据，生成稀疏矩阵
-#     print(sid)
-#     subs = Subscribe.objects.all().select_related('s_id', 'c_id')
-#     sub = Subscribe.objects.filter(s_id=sid).all()
-#     data = [sub.s_id.id for sub in subs]
-#     indices = [sub.c_id.id for sub in subs]
-#     print(data)
-#     matrix = csr_matrix(([1] * len(data), (data, indices)))
-#     print(matrix)
-#     # 计算用户之间的相似度
-#     similarities = cosine_similarity(matrix)
-#     target_user_id = sid  # 目标用户的ID
-#     n_similar_users = 5  # 寻找相似用户的数量
-#
-#     # 获取与目标用户最相似的用户
-#     target_user_index = data.index(target_user_id)
-#     print(target_user_index)
-#     similar_users = similarities[target_user_index].argsort()[::-1][:n_similar_users]
-#     print(similar_users)
-#     recommended_courses = set()
-#     for user_index in similar_users:
-#         user_id = user_index
-#         # 获取相似用户喜欢的课程
-#         similar_subs = Subscribe.objects.filter(s_id=user_id).values_list('c_id', flat=True)
-#         similar_courses = Course.objects.filter(id__in=similar_subs)
-#
-#         # 将这些课程添加到推荐列表中
-#         recommended_courses.update(similar_courses)
-#     print(recommended_courses)
-#     return render(request, 'course/recommend.html', {"course": recommended_courses})
 def recommend(request, sid):
     # 获取订阅数据，生成稀疏矩阵
     subs = Subscribe.objects.all().select_related('s_id', 'c_id')

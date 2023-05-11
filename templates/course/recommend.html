@@ -14,11 +14,13 @@
             height: 300px;
             width: 300px;
         }
+
         .btn-refresh {
             font-size: 20px;
             padding: 10px 20px;
         }
-        .r3{
+
+        .r3 {
             margin-left: 30px;
         }
 
@@ -30,10 +32,12 @@
         <li><a href="/student/list/">首页<span class="sr-only">(current)</span></a></li>
     </ul>
     <ul class="nav navbar-nav">
-        <li><a href="/course/{{ request.session.info.id }}/my_subscribe/">我的订阅<span class="sr-only">(current)</span></a></li>
+        <li><a href="/course/{{ request.session.info.id }}/my_subscribe/">我的订阅<span class="sr-only">(current)</span></a>
+        </li>
     </ul>
     <ul class="nav navbar-nav">
-        <li><a href="/course/{{ request.session.info.id }}/recommend/">个性化推荐<span class="sr-only">(current)</span></a></li>
+        <li><a href="/course/{{ request.session.info.id }}/recommend/">个性化推荐<span class="sr-only">(current)</span></a>
+        </li>
     </ul>
     <ul class="nav navbar-nav">
         <li><a href="/course/popular/">热门课程<span class="sr-only">(current)</span></a></li>

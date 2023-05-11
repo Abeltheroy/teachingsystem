@@ -49,4 +49,4 @@ class Comment(models.Model):
 class Like(models.Model):
     s = models.ForeignKey(to="Student", to_field="id", on_delete=models.CASCADE, verbose_name='学生ID')
     c = models.ForeignKey(to="Course", to_field="id", on_delete=models.CASCADE, verbose_name="课程ID")
-    is_like = models.CharField(verbose_name="是否点赞",default='',max_length=28)
+    is_like = models.CharField(verbose_name="是否点赞", default='', max_length=28)

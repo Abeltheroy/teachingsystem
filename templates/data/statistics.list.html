@@ -9,7 +9,8 @@
                 class="sr-only">(current)</span></a></li>
     </ul>
     <ul class="nav navbar-nav">
-        <li><a href="/course/{{ request.session.info.id }}/recommend/">个性化推荐<span class="sr-only">(current)</span></a></li>
+        <li><a href="/course/{{ request.session.info.id }}/recommend/">个性化推荐<span class="sr-only">(current)</span></a>
+        </li>
     </ul>
     <ul class="nav navbar-nav">
         <li><a href="/course/popular/">热门课程<span class="sr-only">(current)</span></a></li>
@@ -98,30 +99,28 @@
                     trigger: 'item'
                 },
                 legend: {},
-                series: [
-
-                ]
+                series: []
             };
             var s = {{ request.session.info.id }}
 
-            $.ajax({
-                url: '/data/pie/',
-                type: 'get',
-                dataType: 'json',
-                data: {
-                    "s_id": s,
-                },
-                success: function (res) {
-                    if (res.status) {
-                        option.series = res.series_data
-                        option.legend = res.legend
-                        option.title = res.title
-                        option && myChart.setOption(option)
+                $.ajax({
+                    url: '/data/pie/',
+                    type: 'get',
+                    dataType: 'json',
+                    data: {
+                        "s_id": s,
+                    },
+                    success: function (res) {
+                        if (res.status) {
+                            option.series = res.series_data
+                            option.legend = res.legend
+                            option.title = res.title
+                            option && myChart.setOption(option)
+
+                        }
 
                     }
-
-                }
-            })
+                })
 
         }
 

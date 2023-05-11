@@ -65,6 +65,7 @@ def forum(request):
         res |= c
     return render(request, 'admin/forum.html', {"course": res})
 
+
 def forum_detail(request, cid):
     comment = Comment.objects.filter(c_id=cid).all()
     dicts = {}
@@ -72,7 +73,8 @@ def forum_detail(request, cid):
         dicts[Student.objects.filter(id=i.s_id.id).first().username] = i.comment
     return render(request, 'admin/forum_detail.html', {"comment": dicts, "cid": cid})
 
-def forum_delete(request, cid ,name):
+
+def forum_delete(request, cid, name):
     sid = Student.objects.filter(username=name).first()
     Comment.objects.filter(c_id=cid, s_id=sid).delete()
     return forum_detail(request, cid)

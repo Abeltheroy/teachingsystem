@@ -1,13 +1,20 @@
 {% extends 'Base.html' %}
+{% load static %}
 {% block css %}
 
     <style>
+        body {
+            background-image: url("{% static 'img/jpg/Background/a.jpg' %}");
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
         .r1 {
             border-radius: 0;
         }
 
         .img {
-            background-image: url("/app/static/img/cool-background.png");
+            background-image: url("/app/static/img/jpg/Background/cool.png");
         }
 
         .r2 {
@@ -29,27 +36,16 @@
 {% endblock %}
 {% block option %}
     <ul class="nav navbar-nav">
-        <li><a href="/student/list/">首页<span class="sr-only">(current)</span></a></li>
+        <li><a href="/admin/list/">管理员列表<span class="sr-only">(current)</span></a></li>
     </ul>
     <ul class="nav navbar-nav">
-        <li><a href="/course/{{ request.session.info.id }}/my_subscribe/">我的订阅<span class="sr-only">(current)</span></a>
-        </li>
+        <li><a href="/stu/list/">用户管理<span class="sr-only">(current)</span></a></li>
     </ul>
     <ul class="nav navbar-nav">
-        <li><a href="/course/{{ request.session.info.id }}/recommend/">个性化推荐<span class="sr-only">(current)</span></a>
-        </li>
-    </ul>
-    <ul class="nav navbar-nav">
-        <li><a href="/course/popular/">热门课程<span class="sr-only">(current)</span></a></li>
-    </ul>
-    <ul class="nav navbar-nav">
-        <li><a href="/data/statistics/">数据统计<span class="sr-only">(current)</span></a></li>
+        <li><a href="/comment/list/">论坛管理<span class="sr-only">(current)</span></a></li>
     </ul>
 {% endblock %}
 {% block menu %}
-    <li><span class="glyphicon glyphicon-user" aria-hidden="true" style="text-align: center"><a
-            href="/information/{{ request.session.info.id }}/">个人资料</a></span>
-    </li>
     <li role="separator" class="divider"></li>
     <li><span class="glyphicon glyphicon-time" aria-hidden="true"><a href="/logout/">退出登录</a></span></li>
 {% endblock %}
@@ -63,7 +59,7 @@
                 {% endif %}
             <div class="col-md-3">
                 <div class="card mb-4">
-                    <a href="/course/{{ item.id }}/detail/">
+                    <a href="/forum/{{ item.id }}/">
                         <img class="card-img-top r2" src="{{ item.img_url }}" alt="{{ item.title }}">
                         <div class="card-body">
                             <h5 class="card-title">{{ item.title }}</h5>
@@ -77,14 +73,6 @@
             {% endfor %}
         </div>
 
-
-    </div>
-    <div style="float: right">
-
-        <a href="/student/list/" class="btn-refresh">
-            <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
-            <span class="glyphicon-class">刷新</span>
-        </a>
 
     </div>
 

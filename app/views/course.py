@@ -23,7 +23,7 @@ class SubscribeForm(BootStrapModelForm):
 
 def my_subscribe(request, nid):
     cid_list = Subscribe.objects.filter(s_id=nid).all().values_list("c_id", flat=
-                                                                  True)
+    True)
     c_list = []
     for i in cid_list:
         c_list.append(i)
