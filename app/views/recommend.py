@@ -30,7 +30,7 @@ def recommend(request, sid):
     # 计算用户之间的相似度
     similarities = cosine_similarity(user_vectors)
     similar_users = similarities[target_user_index].argsort()[::-1][:5]
-    print(similar_users)
+
     # 将整数映射回课程 ID
     recommended_courses = set()
     for user_index in similar_users:
